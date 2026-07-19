@@ -21,6 +21,15 @@ export default function ArticleBody({ content }) {
             </ul>
           );
         }
+        if (block.type === "link") {
+          return (
+            <p key={i} style={{ lineHeight: 1.7 }}>
+              <a href={block.href} className="link-emphasis">
+                {block.text}
+              </a>
+            </p>
+          );
+        }
         return (
           <p key={i} style={{ lineHeight: 1.7 }}>
             {block.text}

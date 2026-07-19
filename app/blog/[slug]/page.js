@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getPostBySlug, getRelatedPosts, getAllSlugs } from "@/lib/blog/blogService";
 import { siteConfig } from "@/lib/seo/siteConfig";
-import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/seo/schemas";
+import { buildArticleSchema, buildBreadcrumbSchema, buildFaqSchema } from "@/lib/seo/schemas";
 import JsonLd from "@/components/server/JsonLd";
 import ArticleBody from "@/components/server/ArticleBody";
 import TableOfContents from "@/components/server/TableOfContents";
@@ -49,11 +49,13 @@ export default async function BlogPostPage({ params }) {
     { name: "Blog", path: "/blog" },
     { name: post.title, path: `/blog/${slug}` },
   ]);
+  const faqSchema = buildFaqSchema(post.faqs);
+  const schemas = [articleSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : [])];
 
   return (
     <section className="section">
       <div className="container">
-        <JsonLd data={[articleSchema, breadcrumbSchema]} />
+        <JsonLd data={schemas} />
 
         <nav className="breadcrumb" aria-label="Breadcrumb">
           <a href="/blog">Blog</a> / <span aria-current="page">{post.title}</span>
