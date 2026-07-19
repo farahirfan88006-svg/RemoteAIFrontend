@@ -1,0 +1,82 @@
+.hero {
+  padding-block: var(--space-3xl) var(--space-2xl);
+  border-bottom: 1px solid var(--color-border);
+  background-image: var(--gradient-hero);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: var(--space-2xl);
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.heading {
+  max-width: 620px;
+}
+
+.accentText {
+  background-image: var(--gradient-brand);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.subheading {
+  max-width: 520px;
+  font-size: var(--fs-lg);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-top: var(--space-xs);
+}
+
+.visual {
+  display: flex;
+  justify-content: center;
+}
+
+.networkSvg {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+}
+
+.edge {
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+}
+
+.node {
+  fill: var(--color-surface);
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+}
+
+.nodeActive {
+  fill: var(--color-signal);
+  stroke: var(--color-signal);
+}
+
+@media (max-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr;
+  }
+
+  .visual {
+    order: -1;
+  }
+
+  .networkSvg {
+    max-width: 240px;
+  }
+}

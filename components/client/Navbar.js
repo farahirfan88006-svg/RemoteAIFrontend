@@ -1,0 +1,163 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import Logo from "@/components/ui/Logo";
+import Button from "@/components/ui/Button";
+import { useAuth } from "@/lib/auth/AuthContext";
+import styles from "./Navbar.module.css";
+
+const NAV_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/jobs", label: "Jobs" },
+  { href: "/blog", label: "Blog" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+
+/**
+ * Site navigation. Marked "use client" because the mobile menu needs
+ * local open/closed state — this is the one interactive seam in an
+ * otherwise server-rendered layout. Everything it renders that doesn't
+ * need interactivity (Logo, Button-as-link) stays a plain component that
+ * happens to be included in this client boundary.
+ */
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const { user, logout } = useAuth();
+
+  function isActive(href) {
+    return href === "/" ? pathname === "/" : pathname.startsWith(href);
+  }
+
+  // Close the mobile menu on route-independent viewport resize back to desktop.
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth > 780) setIsOpen(false);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return (
+    <header className={styles.header}>
+      <div className={`container ${styles.bar}`}>
+        <Link href="/" className={styles.brand} onClick={() => setIsOpen(false)}>
+          <Logo size={26} />
+        </Link>
+
+        <nav className={styles.desktopNav} aria-label="Primary">
+          <ul>
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={isActive(link.href) ? styles.navLinkActive : undefined}
+                  aria-current={isActive(link.href) ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className={styles.desktopActions}>
+          <Button href="/jobs" variant="ghost">
+            Browse jobs
+          </Button>
+          {user ? (
+            <>
+              <Button href="/resumes" variant="ghost">
+                Resume Builder
+              </Button>
+              <Button href="/cover-letters" variant="ghost">
+                Cover Letters
+              </Button>
+              <Button variant="secondary" onClick={() => logout()}>
+                Log out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button href="/login" variant="ghost">
+                Log in
+              </Button>
+              <Button href="/register" variant="primary">
+                Sign up
+              </Button>
+            </>
+          )}
+        </div>
+
+        <button
+          type="button"
+          className={styles.menuToggle}
+          aria-expanded={isOpen}
+          aria-controls="mobile-nav"
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          onClick={() => setIsOpen((open) => !open)}
+        >
+          <span className={styles.menuIcon} data-open={isOpen} />
+        </button>
+      </div>
+
+      <nav
+        id="mobile-nav"
+        className={styles.mobileNav}
+        data-open={isOpen}
+        aria-label="Mobile"
+      >
+        <ul>
+          {NAV_LINKS.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className={isActive(link.href) ? styles.navLinkActive : undefined}
+                aria-current={isActive(link.href) ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div className={styles.mobileActions}>
+          <Button href="/jobs" variant="secondary" onClick={() => setIsOpen(false)}>
+            Browse jobs
+          </Button>
+          {user ? (
+            <>
+              <Button href="/resumes" variant="primary" onClick={() => setIsOpen(false)}>
+                Resume Builder
+              </Button>
+              <Button href="/cover-letters" variant="ghost" onClick={() => setIsOpen(false)}>
+                Cover Letters
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setIsOpen(false);
+                  logout();
+                }}
+              >
+                Log out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button href="/login" variant="ghost" onClick={() => setIsOpen(false)}>
+                Log in
+              </Button>
+              <Button href="/register" variant="primary" onClick={() => setIsOpen(false)}>
+                Sign up
+              </Button>
+            </>
+          )}
+        </div>
+      </nav>
+    </header>
+  );
+}
