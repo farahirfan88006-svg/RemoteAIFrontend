@@ -4,6 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth/AuthContext";
 import * as analyzerApi from "@/lib/api/analyzer";
+import PremiumRoute from "@/components/premium/PremiumRoute";
+import PremiumBadge from "@/components/premium/PremiumBadge";
 
 function ScoreBadge({ score }) {
   const color = score >= 80 ? "#16a34a" : score >= 60 ? "#d97706" : "#dc2626";
@@ -136,13 +138,17 @@ export default function ResumeAnalyzerPage() {
   if (authLoading || !user) return null;
 
   return (
-    <section className="section">
+    <PremiumRoute feature="resumeAnalyzer">
+      <section className="section">
       <div className="container">
         <span className="eyebrow">
           <span className="dot" />
           Resume Analyzer
         </span>
-        <h1 style={{ marginTop: "var(--space-sm)" }}>Check your resume against real job-market demand</h1>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--space-sm)", marginTop: "var(--space-sm)", flexWrap: "wrap" }}>
+          <h1 style={{ margin: 0 }}>Check your resume against real job-market demand</h1>
+          <PremiumBadge feature="resumeAnalyzer" />
+        </div>
         <p>Upload a PDF or DOCX resume for an automated ATS-style check and skill-gap comparison.</p>
 
         <div className="card" style={{ padding: "var(--space-lg)", marginTop: "var(--space-md)" }}>
@@ -186,6 +192,7 @@ export default function ResumeAnalyzerPage() {
           </div>
         )}
       </div>
-    </section>
+      </section>
+    </PremiumRoute>
   );
 }

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthContext";
 import * as coverLettersApi from "@/lib/api/coverLetters";
+import PremiumBadge from "@/components/premium/PremiumBadge";
 
 export default function CoverLettersDashboardPage() {
   const { user, isLoading: authLoading } = useAuth();
@@ -50,7 +51,10 @@ export default function CoverLettersDashboardPage() {
               <span className="dot" />
               Cover Letters
             </span>
-            <h1 style={{ marginTop: "var(--space-sm)" }}>Your cover letters</h1>
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--space-sm)", marginTop: "var(--space-sm)", flexWrap: "wrap" }}>
+              <h1 style={{ margin: 0 }}>Your cover letters</h1>
+              <PremiumBadge feature="coverLetter" />
+            </div>
           </div>
           <Link href="/cover-letters/new" className="btn btn-primary">
             + New cover letter

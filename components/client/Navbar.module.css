@@ -152,7 +152,7 @@
   }
 
   .mobileNav[data-open="true"] {
-    max-height: 420px;
+    max-height: 640px;
     border-bottom-color: var(--color-border);
   }
 

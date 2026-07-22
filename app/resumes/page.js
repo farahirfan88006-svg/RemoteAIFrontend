@@ -7,6 +7,9 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import * as resumesApi from "@/lib/api/resumes";
 import { SkeletonCardGrid } from "@/components/ui/Skeleton";
 import StateBlock from "@/components/ui/StateBlock";
+import PremiumFeature from "@/components/premium/PremiumFeature";
+import PremiumBadge from "@/components/premium/PremiumBadge";
+import { getUserPlan, planLabel } from "@/lib/premium/access";
 
 /**
  * The Resume Builder dashboard — every authenticated user's entry point
@@ -99,12 +102,17 @@ export default function ResumesDashboardPage() {
               <span className="dot" />
               Resume Builder
             </span>
-            <h1 style={{ marginTop: "var(--space-sm)" }}>Your resumes</h1>
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--space-sm)", marginTop: "var(--space-sm)", flexWrap: "wrap" }}>
+              <h1 style={{ margin: 0 }}>Your resumes</h1>
+              <PremiumBadge feature="resumeBuilder" />
+            </div>
           </div>
-          <div style={{ display: "flex", gap: "var(--space-sm)" }}>
-            <Link href="/resume-analyzer" className="btn btn-secondary">
-              Analyze a resume
-            </Link>
+          <div style={{ display: "flex", gap: "var(--space-sm)", flexWrap: "wrap" }}>
+            <PremiumFeature feature="resumeAnalyzer">
+              <Link href="/resume-analyzer" className="btn btn-secondary">
+                Analyze a resume
+              </Link>
+            </PremiumFeature>
             <Link href="/resumes/generate" className="btn btn-secondary">
               Generate with AI
             </Link>
@@ -112,6 +120,30 @@ export default function ResumesDashboardPage() {
               + New resume
             </button>
           </div>
+        </div>
+
+        <div
+          className="card"
+          style={{
+            marginTop: "var(--space-lg)",
+            padding: "var(--space-md) var(--space-lg)",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "var(--space-sm)",
+          }}
+        >
+          <div>
+            <span className="eyebrow">
+              <span className="dot" />
+              Current Plan
+            </span>
+            <h3 style={{ marginTop: "var(--space-3xs)" }}>{planLabel(getUserPlan(user))}</h3>
+          </div>
+          <Link href="/pricing" className="btn btn-primary">
+            Upgrade to Premium
+          </Link>
         </div>
 
         {error && (

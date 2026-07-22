@@ -42,6 +42,11 @@ function urlSlug(value) {
 const STATIC_ROUTES = [
   { path: "/", changeFrequency: "daily", priority: 1 },
   { path: "/jobs", changeFrequency: "hourly", priority: 0.9 },
+  { path: "/pricing", changeFrequency: "monthly", priority: 0.5 },
+  { path: "/career-coach", changeFrequency: "monthly", priority: 0.4 },
+  { path: "/mock-interview", changeFrequency: "monthly", priority: 0.4 },
+  { path: "/resume-rewrite", changeFrequency: "monthly", priority: 0.4 },
+  { path: "/match-score", changeFrequency: "monthly", priority: 0.4 },
   { path: "/blog", changeFrequency: "daily", priority: 0.6 },
   { path: "/about", changeFrequency: "monthly", priority: 0.3 },
   { path: "/contact", changeFrequency: "monthly", priority: 0.3 },

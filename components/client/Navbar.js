@@ -6,12 +6,16 @@ import { usePathname } from "next/navigation";
 import Logo from "@/components/ui/Logo";
 import Button from "@/components/ui/Button";
 import { useAuth } from "@/lib/auth/AuthContext";
+import PremiumToolsMenu from "@/components/premium/PremiumToolsMenu";
+import PremiumBadge from "@/components/premium/PremiumBadge";
+import { PREMIUM_NAV_LINKS } from "@/lib/premium/premiumNav";
 import styles from "./Navbar.module.css";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/jobs", label: "Jobs" },
   { href: "/blog", label: "Blog" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -76,6 +80,7 @@ export default function Navbar() {
               <Button href="/cover-letters" variant="ghost">
                 Cover Letters
               </Button>
+              <PremiumToolsMenu />
               <Button variant="secondary" onClick={() => logout()}>
                 Log out
               </Button>
@@ -136,6 +141,18 @@ export default function Navbar() {
               <Button href="/cover-letters" variant="ghost" onClick={() => setIsOpen(false)}>
                 Cover Letters
               </Button>
+              {PREMIUM_NAV_LINKS.map((item) => (
+                <Button
+                  key={item.href}
+                  href={item.href}
+                  variant="ghost"
+                  onClick={() => setIsOpen(false)}
+                  style={{ justifyContent: "space-between", width: "100%" }}
+                >
+                  <span>{item.label}</span>
+                  <PremiumBadge feature={item.feature} />
+                </Button>
+              ))}
               <Button
                 variant="ghost"
                 onClick={() => {
