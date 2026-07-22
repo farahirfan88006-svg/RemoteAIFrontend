@@ -74,6 +74,9 @@ export default function Navbar() {
           </Button>
           {user ? (
             <>
+              <Button href="/dashboard" variant="ghost">
+                Dashboard
+              </Button>
               <Button href="/resumes" variant="ghost">
                 Resume Builder
               </Button>
@@ -135,7 +138,10 @@ export default function Navbar() {
           </Button>
           {user ? (
             <>
-              <Button href="/resumes" variant="primary" onClick={() => setIsOpen(false)}>
+              <Button href="/dashboard" variant="primary" onClick={() => setIsOpen(false)}>
+                Dashboard
+              </Button>
+              <Button href="/resumes" variant="secondary" onClick={() => setIsOpen(false)}>
                 Resume Builder
               </Button>
               <Button href="/cover-letters" variant="ghost" onClick={() => setIsOpen(false)}>

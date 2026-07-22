@@ -1,0 +1,67 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.icon {
+  font-size: var(--fs-2xl);
+  line-height: 1;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fs-lg);
+}
+
+.body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  flex: 1;
+  min-height: 4.5rem;
+}
+
+.description {
+  margin: 0;
+  font-size: var(--fs-sm);
+}
+
+.planNote {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Locked overlay — sits over the description/plan-note area only, so
+   the card's icon, title, and badge stay visible/legible even when
+   the feature underneath is locked. Uses the shared .glass treatment
+   (see globals.css) rather than a new visual language. */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  text-align: center;
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+}
+
+.overlayText {
+  margin: 0;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  color: var(--color-text);
+}

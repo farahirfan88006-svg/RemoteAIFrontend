@@ -52,6 +52,19 @@ const STATIC_ROUTES = [
   { path: "/contact", changeFrequency: "monthly", priority: 0.3 },
   { path: "/privacy-policy", changeFrequency: "yearly", priority: 0.1 },
   { path: "/terms", changeFrequency: "yearly", priority: 0.1 },
+  // Phase 3: /dashboard is auth-gated (redirects signed-out visitors to
+  // /login) but so are /career-coach, /mock-interview, /resume-rewrite,
+  // and /match-score above — this project's existing convention is that
+  // a gated page's own shell/metadata is still public and indexable,
+  // only the interactive content underneath locks. /dashboard follows
+  // that same precedent.
+  //
+  // /dashboard/settings is deliberately NOT listed here: it's a private
+  // account-management page with no content of value to a search
+  // visitor (see its `robots: { index: false }` metadata), the same
+  // reasoning that already keeps /login, /register, /resumes, and
+  // /cover-letters out of this file.
+  { path: "/dashboard", changeFrequency: "weekly", priority: 0.3 },
 ];
 
 export default async function sitemap() {

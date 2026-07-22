@@ -1,0 +1,71 @@
+.stack {
+  margin-top: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+.input {
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.input:disabled,
+.input:read-only {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.statusNote {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--color-accent-strong);
+}
+
+.helperNote {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--color-text-faint);
+}
+
+.checkboxList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.themeRow {
+  display: flex;
+  gap: var(--space-2xs);
+  flex-wrap: wrap;
+}
+
+.dangerCard {
+  border-color: color-mix(in srgb, var(--color-danger) 40%, var(--color-border));
+}
