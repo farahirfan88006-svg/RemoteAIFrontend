@@ -51,6 +51,7 @@ const STATIC_ROUTES = [
   { path: "/about", changeFrequency: "monthly", priority: 0.3 },
   { path: "/contact", changeFrequency: "monthly", priority: 0.3 },
   { path: "/privacy-policy", changeFrequency: "yearly", priority: 0.1 },
+  { path: "/terms", changeFrequency: "yearly", priority: 0.1 },
 ];
 
 export default async function sitemap() {
