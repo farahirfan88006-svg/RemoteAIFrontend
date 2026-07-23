@@ -1,11 +1,18 @@
 /**
- * Original → Improved → Summary layout for the Resume Rewrite tool.
- * Both text blocks render as read-only, pre-wrapped text (not inputs)
- * since this is a comparison view, not an editor.
+ * Original → Rewritten layout for the Resume Rewrite tool. Both text
+ * blocks render as read-only, pre-wrapped text (not inputs) since this
+ * is a comparison view, not an editor. No line-level diff/stats here —
+ * POST /api/ai/resume-rewrite/rewrite only returns a rewritten text
+ * block (`data.result`), not a structured change list.
  */
-export default function ResumeCompareView({ original, improved, changes, stats }) {
+import CopyButton from "./CopyButton";
+
+export default function ResumeCompareView({ original, improved, fallback, message }) {
   return (
     <div style={{ marginTop: "var(--space-lg)" }}>
+      {fallback && (
+        <p style={{ marginBottom: "var(--space-sm)", fontSize: "0.85em", color: "var(--color-text-muted, #666)" }}>{message}</p>
+      )}
       <div
         style={{
           display: "grid",
@@ -19,24 +26,14 @@ export default function ResumeCompareView({ original, improved, changes, stats }
         </div>
 
         <div className="card" style={{ padding: "var(--space-lg)", borderColor: "var(--color-accent)" }}>
-          <span className="badge badge-accent">Improved Version</span>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--space-sm)", flexWrap: "wrap" }}>
+            <span className="badge badge-accent">
+              Rewritten Version{fallback ? " (built-in fallback)" : ""}
+            </span>
+            <CopyButton text={improved} />
+          </div>
           <pre style={preStyle}>{improved}</pre>
         </div>
-      </div>
-
-      <div className="card" style={{ padding: "var(--space-lg)", marginTop: "var(--space-md)" }}>
-        <span className="badge badge-success">
-          {stats.linesChanged} of {stats.totalLines} lines improved
-        </span>
-        <h4 style={{ marginTop: "var(--space-sm)" }}>Improvement summary</h4>
-        <ul style={{ marginTop: "var(--space-2xs)", display: "flex", flexDirection: "column", gap: "var(--space-2xs)" }}>
-          {changes.map((change, i) => (
-            <li key={i} style={{ display: "flex", gap: "var(--space-2xs)", fontSize: "0.9em" }}>
-              <span aria-hidden="true">•</span>
-              <span>{change}</span>
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );
