@@ -13,6 +13,10 @@ const REASONS = [
     metric: "100%",
     label: "remote-first roles, no hidden office requirements",
   },
+  {
+    metric: "0",
+    label: "cost to job seekers, ever",
+  },
 ];
 
 export default function WhyChooseUs() {

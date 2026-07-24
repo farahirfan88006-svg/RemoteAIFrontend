@@ -6,15 +6,22 @@ export default function CTASection() {
     <section className="section">
       <div className="container">
         <div className={styles.panel}>
-          <div>
+          <div className={styles.glow} aria-hidden="true" />
+
+          <div className={styles.content}>
+            <span className={`eyebrow ${styles.eyebrow}`}>
+              <span className="dot dot--pulse" />
+              Free for job seekers, always
+            </span>
             <h2 className={styles.heading}>Ready to work from anywhere?</h2>
             <p className={styles.subheading}>
               Create a profile, get matched to remote-first roles, and apply
               with a resume built for the way distributed teams hire.
             </p>
           </div>
+
           <div className={styles.actions}>
-            <Button href="/jobs" size="lg" variant="primary">
+            <Button href="/jobs" size="lg" variant="primary" className={styles.ctaPrimary}>
               Browse remote jobs
             </Button>
             <Button href="/contact" size="lg" variant="secondary">
