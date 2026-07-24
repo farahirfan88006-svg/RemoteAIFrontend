@@ -1,16 +1,12 @@
 .wrapper {
   padding: 0;
-  overflow: hidden;
-}
-
-.scroll {
   overflow-x: auto;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 560px;
+  min-width: 480px;
 }
 
 .table th,
@@ -28,33 +24,11 @@
   letter-spacing: 0.06em;
   color: var(--color-text-muted);
   font-weight: 500;
-  padding-block: var(--space-md);
-}
-
-.featureHead {
-  width: 46%;
-}
-
-.table thead th.premiumHead {
-  color: var(--color-accent-strong);
 }
 
 .table tbody th {
   font-weight: 500;
   color: var(--color-text);
-  vertical-align: top;
-}
-
-.featureLabel {
-  display: block;
-}
-
-.featureDescription {
-  display: block;
-  margin-top: 2px;
-  font-size: var(--fs-xs);
-  font-weight: 400;
-  color: var(--color-text-muted);
 }
 
 .table tbody tr:last-child th,
@@ -67,49 +41,49 @@
 .table th:nth-child(2),
 .table th:nth-child(3) {
   text-align: center;
-  width: 27%;
-}
-
-/* Premium column reads as visually dominant: a soft accent wash the
-   full height of the table, echoing the highlighted pricing card. */
-.premiumCell {
-  background: color-mix(in srgb, var(--color-accent) 6%, transparent);
-  border-left: 1px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
-  border-right: 1px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
-}
-
-.yes,
-.no {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
 }
 
 .yes {
   color: var(--color-success);
-  background: color-mix(in srgb, var(--color-success) 14%, transparent);
+  font-weight: 700;
 }
 
 .no {
   color: var(--color-text-faint);
-  background: var(--color-bg-elevated);
 }
 
-.mark {
-  width: 14px;
-  height: 14px;
+.caption {
+  caption-side: top;
+  text-align: left;
+  padding: var(--space-sm) var(--space-md) 0;
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
 }
 
-@media (max-width: 640px) {
-  .table th,
-  .table td {
-    padding: var(--space-xs) var(--space-sm);
-  }
+.aiTag {
+  display: inline-flex;
+  align-items: center;
+  margin-left: var(--space-2xs);
+  padding: 0.05rem 0.4rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-accent-strong);
+  background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+  vertical-align: middle;
+}
 
-  .featureDescription {
-    display: none;
-  }
+.limit {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+
+.unlimited {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--color-accent-strong);
 }

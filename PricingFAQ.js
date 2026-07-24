@@ -1,80 +1,57 @@
-import { listFreeFeatures, listPremiumFeatures } from "@/lib/premium/features";
-import { IconChevronDown } from "./PricingIcons";
-import styles from "./PricingFAQ.module.css";
-
-/** Joins a list of labels into a natural sentence: "A, B and C". */
-function joinLabels(labels) {
-  if (labels.length <= 1) return labels.join("");
-  return `${labels.slice(0, -1).join(", ")} and ${labels[labels.length - 1]}`;
-}
+import { FREE_AI_REQUEST_LIMIT, PLAN_PRICING } from "@/lib/premium/planPricing";
+import styles from "./PricingFaq.module.css";
 
 /**
- * FAQ content for the pricing page. Built as a plain array (rather
- * than hardcoded JSX) so app/pricing/page.js can reuse the same data
- * to build the FAQPage JSON-LD schema without repeating copy.
+ * Pricing FAQ. Returns both the rendered markup and the raw Q&A list,
+ * so app/pricing/page.js can feed the same copy into a FAQPage JSON-LD
+ * schema without duplicating the text.
  */
 export function getPricingFaqs() {
-  const freeLabels = listFreeFeatures().map((f) => f.label);
-  const premiumLabels = listPremiumFeatures().map((f) => f.label);
-
   return [
     {
-      question: "Is the Free plan actually free, forever?",
-      answer: `Yes. Free never expires and never asks for a card. It includes ${joinLabels(
-        freeLabels
-      )}.`,
-    },
-    {
-      question: "What do I get with Premium?",
-      answer: `Premium adds everything in Free plus ${joinLabels(
-        premiumLabels
-      )} — the AI-powered tools built for people actively applying.`,
-    },
-    {
-      question: "When does Premium billing go live?",
+      question: "What counts as an AI request?",
       answer:
-        "Premium billing isn't live yet — this page reflects what each plan will include once it is. Tap \"Notify me\" on the Premium plan above to hear the moment it opens.",
+        "Using the AI Resume Analyzer, AI Career Coach, Mock Interviews, AI Match Score, or Resume Rewrite each counts as one AI request. Browsing jobs, using the resume and cover letter editors, and tracking saved or applied jobs never count — those are unlimited on every plan.",
     },
     {
-      question: "Do I need to enter payment details to use RemoteAI today?",
-      answer:
-        "No. Every account is currently on the Free plan while Premium billing is being built, and requesting early access doesn't charge you anything.",
+      question: `What happens after I use my ${FREE_AI_REQUEST_LIMIT} free AI requests?`,
+      answer: `Free includes ${FREE_AI_REQUEST_LIMIT} AI requests per month for each AI tool. Once you reach the limit on a given tool, you can wait for it to reset next month or upgrade to Premium for unlimited use of every AI tool.`,
     },
     {
-      question: "Can I see what Premium tools look like before they launch?",
+      question: "Is Premium available to buy right now?",
       answer:
-        "Yes. Premium-only pages are visible today with a locked preview showing exactly what each tool does, so you know what you're signing up for ahead of launch.",
+        "Not yet — billing for Premium isn't live. The pricing on this page reflects the plan going forward. Use the Notify me button and we'll email you as soon as Premium is ready to purchase.",
+    },
+    {
+      question: "How much will Premium cost and how does billing work?",
+      answer: `Premium will be ${PLAN_PRICING.premium.price}${PLAN_PRICING.premium.period}, billed monthly with no long-term contract.`,
+    },
+    {
+      question: "Can I cancel anytime?",
+      answer:
+        "Yes. You can cancel whenever you like — your account simply moves back to the Free plan, and you keep full access to every core tool: job listings, search and filters, the resume builder, cover letters, interview questions, and saved and applied jobs.",
+    },
+    {
+      question: "Do unused AI requests roll over to the next month?",
+      answer: "No. Each AI tool's allowance resets at the start of the next month rather than carrying over.",
     },
   ];
 }
 
-export default function PricingFAQ() {
+export default function PricingFaq() {
   const faqs = getPricingFaqs();
 
   return (
-    <section className="section">
-      <div className="container">
-        <div className="section-header">
-          <span className="eyebrow">
-            <span className="dot" />
-            FAQ
-          </span>
-          <h2>Questions about the plans</h2>
-          <p>Everything you need to know about Free and Premium, straight from the source.</p>
-        </div>
-
-        <div className={styles.list}>
-          {faqs.map((faq) => (
-            <details key={faq.question} className={`card ${styles.item}`}>
-              <summary className={styles.question}>
-                <span>{faq.question}</span>
-                <IconChevronDown className={styles.chevron} aria-hidden="true" />
-              </summary>
-              <p className={styles.answer}>{faq.answer}</p>
-            </details>
-          ))}
-        </div>
-      </div>
-    </section>
+    <div className={styles.list}>
+      {faqs.map(({ question, answer }) => (
+        <details key={question} className={styles.item}>
+          <summary className={styles.question}>
+            <span>{question}</span>
+            <span className={styles.icon} aria-hidden="true" />
+          </summary>
+          <p className={styles.answer}>{answer}</p>
+        </details>
+      ))}
+    </div>
   );
 }
