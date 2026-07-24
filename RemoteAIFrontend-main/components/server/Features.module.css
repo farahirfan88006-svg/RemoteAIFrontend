@@ -1,0 +1,100 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+}
+
+.card {
+  position: relative;
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  overflow: hidden;
+  transition: border-color var(--transition-base) var(--ease-standard),
+    transform var(--transition-base) var(--ease-standard),
+    box-shadow var(--transition-base) var(--ease-standard);
+  animation: card-in 600ms var(--ease-standard) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card:hover {
+  border-color: transparent;
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.cardGlow {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--gradient-brand);
+  opacity: 0;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: opacity var(--transition-base) var(--ease-standard);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card:hover .cardGlow {
+  opacity: 1;
+}
+
+.iconWrap {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-md);
+  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  transition: transform var(--transition-base) var(--ease-standard),
+    background var(--transition-base) var(--ease-standard);
+}
+
+.iconWrap svg {
+  width: 22px;
+  height: 22px;
+}
+
+.card:hover .iconWrap {
+  transform: scale(1.08) rotate(-4deg);
+  background: var(--gradient-brand);
+  color: var(--color-accent-contrast);
+}
+
+.cardTitle {
+  position: relative;
+  z-index: 1;
+  margin-bottom: var(--space-xs);
+}
+
+.cardDescription {
+  position: relative;
+  z-index: 1;
+  font-size: var(--fs-sm);
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

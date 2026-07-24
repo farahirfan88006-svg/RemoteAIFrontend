@@ -1,0 +1,64 @@
+.form {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-2xs);
+  flex: 1;
+  min-width: 220px;
+}
+
+.label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.input {
+  flex: 1;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-xs) var(--space-sm);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  transition: border-color 160ms ease;
+}
+
+.input:hover {
+  border-color: var(--color-border-strong);
+}
+
+.submit {
+  flex-shrink: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding-inline: var(--space-sm);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color 160ms ease;
+}
+
+.submit:hover {
+  background: var(--color-surface-hover);
+}
+
+@media (max-width: 640px) {
+  .form {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .input,
+  .submit {
+    /* --fs-sm is under the 16px iOS auto-zoom threshold; bump it here
+       specifically (rather than relying only on the global input rule)
+       so the visual size stays in sync with the rest of the control. */
+    font-size: 16px;
+  }
+}
