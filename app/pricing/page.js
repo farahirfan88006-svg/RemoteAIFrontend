@@ -3,7 +3,7 @@ import PricingCard from "@/components/premium/PricingCard";
 import FeatureComparisonTable from "@/components/premium/FeatureComparisonTable";
 import AiRequestsSection from "@/components/premium/AiRequestsSection";
 import WhyUpgradeSection from "@/components/premium/WhyUpgradeSection";
-import PricingFaq, { getPricingFaqs } from "@/components/premium/PricingFaq";
+import PricingFaq, { getPricingFaqs } from "@/components/premium/PricingFAQ";
 import PricingCTA from "@/components/premium/PricingCTA";
 import styles from "./page.module.css";
 import { siteConfig } from "@/lib/seo/siteConfig";
