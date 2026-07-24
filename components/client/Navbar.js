@@ -83,6 +83,9 @@ export default function Navbar() {
               <Button href="/cover-letters" variant="ghost">
                 Cover Letters
               </Button>
+              <Button href="/saved-jobs" variant="ghost">
+                Saved Jobs
+              </Button>
               <PremiumToolsMenu />
               <Button variant="secondary" onClick={() => logout()}>
                 Log out
@@ -146,6 +149,9 @@ export default function Navbar() {
               </Button>
               <Button href="/cover-letters" variant="ghost" onClick={() => setIsOpen(false)}>
                 Cover Letters
+              </Button>
+              <Button href="/saved-jobs" variant="ghost" onClick={() => setIsOpen(false)}>
+                Saved Jobs
               </Button>
               {PREMIUM_NAV_LINKS.map((item) => (
                 <Button

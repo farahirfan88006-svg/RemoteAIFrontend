@@ -4,6 +4,7 @@ import Footer from "@/components/server/Footer";
 import { siteConfig } from "@/lib/seo/siteConfig";
 import { buildOrganizationSchema, buildWebsiteSchema } from "@/lib/seo/schemas";
 import { AuthProvider } from "@/lib/auth/AuthContext";
+import { SavedJobsProvider } from "@/lib/savedJobs/SavedJobsContext";
 import "./globals.css";
 
 // Display face — used for headings via the --font-space-grotesk CSS variable.
@@ -72,9 +73,11 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <AuthProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+          <SavedJobsProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </SavedJobsProvider>
         </AuthProvider>
       </body>
     </html>

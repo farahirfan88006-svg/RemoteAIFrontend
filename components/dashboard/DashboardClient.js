@@ -9,6 +9,7 @@ import { QUICK_ACTIONS } from "@/lib/dashboard/quickActions";
 import DashboardHeader from "./DashboardHeader";
 import PlanStatusCard from "./PlanStatusCard";
 import DashboardStats from "./DashboardStats";
+import JobActivityStats from "./JobActivityStats";
 import UsageCard from "./UsageCard";
 import QuickActionCard from "./QuickActionCard";
 import { SkeletonCard } from "@/components/ui/Skeleton";
@@ -54,6 +55,7 @@ export default function DashboardClient() {
         <div className={styles.overviewGrid}>
           <PlanStatusCard user={user} />
           <DashboardStats user={user} />
+          <JobActivityStats />
           <UsageCard />
         </div>
 

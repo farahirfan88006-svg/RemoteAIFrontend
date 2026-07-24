@@ -2,6 +2,7 @@ import Link from "next/link";
 import Card from "@/components/ui/Card";
 import Tag from "@/components/ui/Tag";
 import ApplyButton from "@/components/server/ApplyButton";
+import SaveJobButton from "@/components/client/SaveJobButton";
 import { INTERVIEW_QUESTIONS_HASH } from "@/lib/jobs/constants";
 import styles from "./JobCard.module.css";
 
@@ -79,6 +80,7 @@ export default function JobCard({ job }) {
               🎯 Interview Questions
             </Link>
           )}
+          <SaveJobButton job={job} />
           <ApplyButton job={job} />
         </div>
       </div>

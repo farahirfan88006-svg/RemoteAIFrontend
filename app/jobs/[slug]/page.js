@@ -8,6 +8,7 @@ import ApplyButton from "@/components/server/ApplyButton";
 import SalaryEstimate from "@/components/client/SalaryEstimate";
 import InterviewQuestionsPanel from "@/components/client/InterviewQuestionsPanel";
 import GenerateCoverLetterButton from "@/components/client/GenerateCoverLetterButton";
+import SaveJobButton from "@/components/client/SaveJobButton";
 import InterviewQuestionsTriggerLink from "@/components/client/InterviewQuestionsTriggerLink";
 
 /**
@@ -70,6 +71,7 @@ export default async function JobDetailPage({ params }) {
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "flex-end", justifyContent: "flex-end" }}>
             <ApplyButton job={job} size="large" />
+            <SaveJobButton job={job} size="large" />
             <GenerateCoverLetterButton job={job} />
             <InterviewQuestionsTriggerLink />
             <a href="#salary-estimate" className="btn btn-ghost">
