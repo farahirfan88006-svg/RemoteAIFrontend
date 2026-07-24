@@ -11,7 +11,9 @@ import styles from "./PricingCard.module.css";
  * @param {string} [props.period] - e.g. "/month"
  * @param {string} [props.tagline]
  * @param {string[]} props.features - short bullet strings
+ * @param {string} [props.footnote] - small line under the feature list, e.g. an AI-request allowance
  * @param {boolean} [props.highlighted] - visually promote this plan (Premium)
+ * @param {string} [props.ribbonLabel] - text for the highlighted ribbon
  * @param {string} [props.ctaLabel]
  * @param {React.ReactNode} [props.cta] - custom call-to-action element
  */
@@ -21,13 +23,20 @@ export default function PricingCard({
   period,
   tagline,
   features,
+  footnote,
   highlighted = false,
+  ribbonLabel = "Most popular",
   ctaLabel = "Get started",
   cta,
 }) {
   return (
     <div className={`card ${styles.card} ${highlighted ? styles.highlighted : ""}`.trim()}>
-      {highlighted && <span className={`badge badge-accent ${styles.ribbon}`}>Most popular</span>}
+      {highlighted && <span className={styles.glow} aria-hidden="true" />}
+      {highlighted && (
+        <span className={`badge badge-accent ${styles.ribbon}`}>
+          <span aria-hidden="true">✨</span> {ribbonLabel}
+        </span>
+      )}
 
       <h3 className={styles.name}>{name}</h3>
       {tagline && <p className={styles.tagline}>{tagline}</p>}
@@ -47,6 +56,8 @@ export default function PricingCard({
           </li>
         ))}
       </ul>
+
+      {footnote && <p className={styles.footnote}>{footnote}</p>}
 
       {cta ?? (
         <button type="button" className={`btn ${highlighted ? "btn-primary" : "btn-secondary"} ${styles.cta}`}>
