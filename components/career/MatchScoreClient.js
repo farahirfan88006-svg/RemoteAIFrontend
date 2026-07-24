@@ -6,10 +6,7 @@ import PremiumPageHeader from "@/components/premium/PremiumPageHeader";
 import MatchScoreReport from "@/components/career/MatchScoreReport";
 import { SkeletonLine } from "@/components/ui/Skeleton";
 import { calculateJobMatchScore } from "@/lib/api/jobMatchScore";
-
-const textareaStyle = { width: "100%", padding: "0.75rem", fontFamily: "var(--font-body)", resize: "vertical" };
-const inputStyle = { width: "100%", padding: "0.5rem" };
-const fieldStyle = { display: "grid", gap: "0.4rem" };
+import styles from "@/components/career/AITools.module.css";
 
 export default function MatchScoreClient() {
   const [resumeText, setResumeText] = useState("");
@@ -66,52 +63,88 @@ export default function MatchScoreClient() {
         />
 
         <PremiumRoute feature="aiMatchScore">
-          <div
-            className="card"
-            style={{ padding: "var(--space-lg)", display: "grid", gap: "var(--space-md)", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
-          >
-            <label style={fieldStyle}>
-              <span style={{ fontSize: "0.85em" }}>Your resume</span>
-              <textarea value={resumeText} onChange={(e) => setResumeText(e.target.value)} rows={10} placeholder="Paste your resume text here…" style={textareaStyle} aria-label="Resume text" />
-            </label>
-            <label style={fieldStyle}>
-              <span style={{ fontSize: "0.85em" }}>Job description</span>
-              <textarea
-                value={jobDescription}
-                onChange={(e) => setJobDescription(e.target.value)}
-                rows={10}
-                placeholder="Paste the job description here…"
-                style={textareaStyle}
-                aria-label="Job description"
-              />
-            </label>
-            <label style={fieldStyle}>
-              <span style={{ fontSize: "0.85em" }}>Skills</span>
-              <input type="text" value={skills} onChange={(e) => setSkills(e.target.value)} placeholder="e.g. React, Node.js, SQL" style={inputStyle} aria-label="Skills" />
-            </label>
-            <label style={fieldStyle}>
-              <span style={{ fontSize: "0.85em" }}>Experience</span>
-              <input type="text" value={experience} onChange={(e) => setExperience(e.target.value)} placeholder="e.g. 5 years in full stack development" style={inputStyle} aria-label="Experience" />
-            </label>
-            <label style={fieldStyle}>
-              <span style={{ fontSize: "0.85em" }}>Education</span>
-              <input type="text" value={education} onChange={(e) => setEducation(e.target.value)} placeholder="e.g. Bachelor's in Computer Science" style={inputStyle} aria-label="Education" />
-            </label>
-          </div>
+          <div className={styles.toolCard}>
+            <span className="eyebrow">Compare</span>
+            <div className={styles.formGridWide} style={{ marginTop: "var(--space-sm)" }}>
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Your resume</span>
+                <textarea
+                  value={resumeText}
+                  onChange={(e) => setResumeText(e.target.value)}
+                  rows={10}
+                  placeholder="Paste your resume text here…"
+                  className={styles.textarea}
+                  aria-label="Resume text"
+                />
+              </label>
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Job description</span>
+                <textarea
+                  value={jobDescription}
+                  onChange={(e) => setJobDescription(e.target.value)}
+                  rows={10}
+                  placeholder="Paste the job description here…"
+                  className={styles.textarea}
+                  aria-label="Job description"
+                />
+              </label>
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Skills</span>
+                <input
+                  type="text"
+                  value={skills}
+                  onChange={(e) => setSkills(e.target.value)}
+                  placeholder="e.g. React, Node.js, SQL"
+                  className={styles.input}
+                  aria-label="Skills"
+                />
+              </label>
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Experience</span>
+                <input
+                  type="text"
+                  value={experience}
+                  onChange={(e) => setExperience(e.target.value)}
+                  placeholder="e.g. 5 years in full stack development"
+                  className={styles.input}
+                  aria-label="Experience"
+                />
+              </label>
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Education</span>
+                <input
+                  type="text"
+                  value={education}
+                  onChange={(e) => setEducation(e.target.value)}
+                  placeholder="e.g. Bachelor's in Computer Science"
+                  className={styles.input}
+                  aria-label="Education"
+                />
+              </label>
+            </div>
 
-          {error && <p style={{ color: "crimson", marginTop: "var(--space-sm)" }}>{error}</p>}
+            {error && (
+              <p className={styles.errorText} role="alert">
+                <span aria-hidden="true">⚠</span> {error}
+              </p>
+            )}
 
-          <div style={{ display: "flex", gap: "var(--space-sm)", marginTop: "var(--space-md)", flexWrap: "wrap" }}>
-            <button type="button" className="btn btn-primary btn-lg" onClick={handleAnalyze} disabled={isSubmitting}>
-              {isSubmitting ? "Calculating…" : "Check my match score"}
-            </button>
-            <button type="button" className="btn btn-secondary btn-lg" onClick={handleClear} disabled={isSubmitting}>
-              Clear
-            </button>
+            <div className={styles.actions}>
+              <button type="button" className="btn btn-primary btn-lg" onClick={handleAnalyze} disabled={isSubmitting}>
+                {isSubmitting ? "Calculating…" : "Check my match score"}
+              </button>
+              <button type="button" className="btn btn-secondary btn-lg" onClick={handleClear} disabled={isSubmitting}>
+                Clear
+              </button>
+            </div>
           </div>
 
           {isSubmitting && (
-            <div className="card" style={{ padding: "var(--space-lg)", marginTop: "var(--space-lg)" }}>
+            <div className={styles.loadingCard}>
+              <div className={styles.loadingHeader}>
+                <span className={styles.loadingSpinner} aria-hidden="true" />
+                <span className={styles.loadingLabel}>Comparing your resume against the job description…</span>
+              </div>
               <SkeletonLine width="60%" height="1.25rem" />
               <SkeletonLine width="90%" />
               <SkeletonLine width="80%" />

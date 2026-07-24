@@ -48,7 +48,7 @@ export default function GenerateCoverLetterButton({ job }) {
       <button type="button" className="btn btn-secondary" onClick={handleClick} disabled={isWorking}>
         {isWorking ? "Generating…" : "Generate Cover Letter"}
       </button>
-      {error && <p style={{ color: "crimson", fontSize: "0.85em", marginTop: "0.25rem" }}>{error}</p>}
+      {error && <p style={{ color: "var(--color-danger)", fontSize: "0.85em", marginTop: "0.25rem" }}>{error}</p>}
     </div>
   );
 }
