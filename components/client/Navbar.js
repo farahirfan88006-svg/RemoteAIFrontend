@@ -22,17 +22,22 @@ const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
-// Phase UX-2.1: the desktop bar was overflowing — too many nav links +
-// action buttons competing for the same row, with no room to shrink.
-// Rather than hiding the overflow with CSS or shrinking type/logo, the
-// desktop row itself is trimmed to only the essentials. Everything
-// dropped here is still reachable: Home/Blog/About/Contact live in the
-// footer (components/server/Footer.js), and Resume Builder/Cover
-// Letters are already Dashboard quick actions
-// (lib/dashboard/quickActions.js) — nothing lost, just not duplicated
-// in the navbar too. Mobile keeps the full NAV_LINKS list above.
+// Phase UX-2.2: back to a balanced SaaS nav. Home, Jobs, Resume
+// Builder, Cover Letter, and Pricing are the primary top-level links;
+// low-priority marketing links (Blog/About/Contact) stay out of the
+// navbar and live in the footer instead (components/server/Footer.js).
+// The AI Tools dropdown (PremiumToolsMenu) covers only the remaining
+// premium AI features, so it isn't duplicating Resume Builder/Cover
+// Letter here. The overflow fix from Phase UX-2.1 (nowrap bar,
+// min-width: 0 on the flexible sections, tighter nav gap + a slightly
+// earlier collapse to the mobile menu — see Navbar.module.css) still
+// applies so this longer link list never causes horizontal scrolling
+// or clipping. Mobile keeps the full NAV_LINKS list above, unchanged.
 const DESKTOP_NAV_LINKS = [
+  { href: "/", label: "Home" },
   { href: "/jobs", label: "Jobs" },
+  { href: "/resumes", label: "Resume Builder" },
+  { href: "/cover-letters", label: "Cover Letter" },
   { href: "/pricing", label: "Pricing" },
 ];
 
@@ -53,9 +58,10 @@ export default function Navbar() {
   }
 
   // Close the mobile menu on route-independent viewport resize back to desktop.
+  // 1140px matches the collapse breakpoint in Navbar.module.css.
   useEffect(() => {
     function handleResize() {
-      if (window.innerWidth > 780) setIsOpen(false);
+      if (window.innerWidth > 1140) setIsOpen(false);
     }
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
