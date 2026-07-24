@@ -11,6 +11,8 @@ import PremiumBadge from "@/components/premium/PremiumBadge";
 import { PREMIUM_NAV_LINKS } from "@/lib/premium/premiumNav";
 import styles from "./Navbar.module.css";
 
+// Mobile nav uses the full site link list — unchanged (see the
+// "Mobile navbar must remain unchanged" requirement in Phase UX-2.1).
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/jobs", label: "Jobs" },
@@ -18,6 +20,20 @@ const NAV_LINKS = [
   { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
+];
+
+// Phase UX-2.1: the desktop bar was overflowing — too many nav links +
+// action buttons competing for the same row, with no room to shrink.
+// Rather than hiding the overflow with CSS or shrinking type/logo, the
+// desktop row itself is trimmed to only the essentials. Everything
+// dropped here is still reachable: Home/Blog/About/Contact live in the
+// footer (components/server/Footer.js), and Resume Builder/Cover
+// Letters are already Dashboard quick actions
+// (lib/dashboard/quickActions.js) — nothing lost, just not duplicated
+// in the navbar too. Mobile keeps the full NAV_LINKS list above.
+const DESKTOP_NAV_LINKS = [
+  { href: "/jobs", label: "Jobs" },
+  { href: "/pricing", label: "Pricing" },
 ];
 
 /**
@@ -54,7 +70,7 @@ export default function Navbar() {
 
         <nav className={styles.desktopNav} aria-label="Primary">
           <ul>
-            {NAV_LINKS.map((link) => (
+            {DESKTOP_NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
@@ -69,24 +85,15 @@ export default function Navbar() {
         </nav>
 
         <div className={styles.desktopActions}>
-          <Button href="/jobs" variant="ghost">
-            Browse jobs
-          </Button>
           {user ? (
             <>
+              <PremiumToolsMenu />
               <Button href="/dashboard" variant="ghost">
                 Dashboard
-              </Button>
-              <Button href="/resumes" variant="ghost">
-                Resume Builder
-              </Button>
-              <Button href="/cover-letters" variant="ghost">
-                Cover Letters
               </Button>
               <Button href="/saved-jobs" variant="ghost">
                 Saved Jobs
               </Button>
-              <PremiumToolsMenu />
               <Button variant="secondary" onClick={() => logout()}>
                 Log out
               </Button>
