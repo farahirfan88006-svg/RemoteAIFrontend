@@ -1,5 +1,5 @@
 import { FREE_AI_REQUEST_LIMIT, PLAN_PRICING } from "@/lib/premium/planPricing";
-import styles from "./PricingFaq.module.css";
+import styles from "./PricingFAQ.module.css";
 
 /**
  * Pricing FAQ. Returns both the rendered markup and the raw Q&A list,
