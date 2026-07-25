@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getPostBySlug, getRelatedPosts, getAllSlugs } from "@/lib/blog/blogService";
+import { getPostBySlug, getRelatedPosts, getAllSlugs, getAdjacentPosts } from "@/lib/blog/blogService";
 import { siteConfig } from "@/lib/seo/siteConfig";
 import { buildArticleSchema, buildBreadcrumbSchema, buildFaqSchema } from "@/lib/seo/schemas";
 import JsonLd from "@/components/server/JsonLd";
@@ -7,6 +7,7 @@ import ArticleBody from "@/components/server/ArticleBody";
 import TableOfContents from "@/components/server/TableOfContents";
 import AuthorCard from "@/components/server/AuthorCard";
 import BlogCard from "@/components/server/BlogCard";
+import PrevNextNav from "@/components/server/PrevNextNav";
 import ShareButtons from "@/components/client/ShareButtons";
 
 /** Prebuilds every article at build time — a fixed, known set of static content, not per-request dynamic data. */
@@ -20,6 +21,8 @@ export async function generateMetadata({ params }) {
   if (!post) return {};
 
   const url = `${siteConfig.url}/blog/${slug}`;
+  const imageUrl = post.featuredImage?.url || `${siteConfig.url}${siteConfig.socialImage}`;
+  const imageAlt = post.featuredImage?.alt || post.title;
   return {
     title: post.title,
     description: post.excerpt,
@@ -31,8 +34,15 @@ export async function generateMetadata({ params }) {
       url,
       type: "article",
       publishedTime: post.publishedAt,
+      modifiedTime: post.updatedAt || post.publishedAt,
+      images: [{ url: imageUrl, alt: imageAlt }],
     },
-    twitter: { card: "summary", title: post.title, description: post.excerpt },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [imageUrl],
+    },
   };
 }
 
@@ -42,7 +52,9 @@ export default async function BlogPostPage({ params }) {
   if (!post) notFound();
 
   const related = getRelatedPosts(post);
+  const { previous, next } = getAdjacentPosts(post);
   const url = `${siteConfig.url}/blog/${slug}`;
+  const wasUpdated = post.updatedAt && post.updatedAt !== post.publishedAt;
 
   const articleSchema = buildArticleSchema(post);
   const breadcrumbSchema = buildBreadcrumbSchema([
@@ -67,11 +79,28 @@ export default async function BlogPostPage({ params }) {
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center", fontSize: "0.9em", color: "var(--color-text-muted)" }}>
             <span>{post.author?.name}</span>
             <span>·</span>
-            <span>{new Date(post.publishedAt).toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" })}</span>
+            <span>Published {new Date(post.publishedAt).toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" })}</span>
+            {wasUpdated && (
+              <>
+                <span>·</span>
+                <span>Updated {new Date(post.updatedAt).toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" })}</span>
+              </>
+            )}
             <span>·</span>
             <span>{post.readingTimeMinutes} min read</span>
           </div>
         </div>
+
+        {post.featuredImage?.url && (
+          // eslint-disable-next-line @next/next/no-img-element -- plain <img>, matching the rest of this project (no next/image usage elsewhere)
+          <img
+            src={post.featuredImage.url}
+            alt={post.featuredImage.alt || post.title}
+            width={1200}
+            height={630}
+            style={{ width: "100%", maxHeight: "420px", objectFit: "cover", borderRadius: "var(--radius-lg, 12px)", marginTop: "var(--space-lg)" }}
+          />
+        )}
 
         <div
           style={{ marginTop: "var(--space-xl)", display: "grid", gridTemplateColumns: "minmax(0, 3fr) minmax(0, 1fr)", gap: "var(--space-xl)" }}
@@ -87,6 +116,8 @@ export default async function BlogPostPage({ params }) {
             <div style={{ marginTop: "var(--space-lg)" }}>
               <AuthorCard author={post.author} />
             </div>
+
+            <PrevNextNav previous={previous} next={next} />
           </div>
 
           <aside style={{ display: "grid", gap: "var(--space-md)", alignContent: "start", position: "sticky", top: "calc(var(--nav-height) + 1rem)" }}>
