@@ -1,5 +1,4 @@
 import PremiumBadge from "./PremiumBadge";
-import styles from "@/components/career/AITools.module.css";
 
 /**
  * Shared header for the Phase 2 premium feature pages — eyebrow, title,
@@ -11,18 +10,16 @@ import styles from "@/components/career/AITools.module.css";
  */
 export default function PremiumPageHeader({ eyebrow, title, description, feature }) {
   return (
-    <div className={styles.hero}>
-      <div className={styles.heroInner}>
-        <span className="eyebrow">
-          <span className="dot dot--pulse" />
-          {eyebrow}
-        </span>
-        <div className={styles.heroTitleRow}>
-          <h1>{title}</h1>
-          <PremiumBadge feature={feature} />
-        </div>
-        {description && <p className={styles.heroDescription}>{description}</p>}
+    <div style={{ marginBottom: "var(--space-lg)" }}>
+      <span className="eyebrow">
+        <span className="dot" />
+        {eyebrow}
+      </span>
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--space-sm)", marginTop: "var(--space-sm)", flexWrap: "wrap" }}>
+        <h1 style={{ margin: 0 }}>{title}</h1>
+        <PremiumBadge feature={feature} />
       </div>
+      {description && <p style={{ marginTop: "var(--space-sm)", maxWidth: 640 }}>{description}</p>}
     </div>
   );
 }

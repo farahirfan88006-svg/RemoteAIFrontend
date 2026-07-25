@@ -141,6 +141,9 @@ export default async function SeoLandingPage({ params, searchParams }) {
       seoLinks={seoLinks}
       relatedType={relatedType}
       relatedSlug={def.value}
+      introContent={content.intro}
+      faqs={content.faqs}
+      showAiToolsPromo={Boolean(content.intro)}
     />
   );
 }

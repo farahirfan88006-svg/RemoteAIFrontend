@@ -1,7 +1,11 @@
 import JsonLd from "@/components/server/JsonLd";
+import ToolSeoContent from "@/components/server/ToolSeoContent";
 import MockInterviewClient from "@/components/career/MockInterviewClient";
 import { siteConfig } from "@/lib/seo/siteConfig";
-import { buildBreadcrumbSchema } from "@/lib/seo/schemas";
+import { buildBreadcrumbSchema, buildFaqSchema } from "@/lib/seo/schemas";
+import { getToolContent } from "@/lib/seo/toolContent";
+
+const content = getToolContent("mock-interview");
 
 export async function generateMetadata() {
   const title = "AI Mock Interview";
@@ -11,6 +15,7 @@ export async function generateMetadata() {
   return {
     title,
     description,
+    keywords: content.keywords,
     alternates: { canonical: "/mock-interview" },
     openGraph: {
       type: "website",
@@ -35,11 +40,13 @@ export default function MockInterviewPage() {
     { name: "Home", path: "/" },
     { name: "Mock Interview", path: "/mock-interview" },
   ]);
+  const faqSchema = buildFaqSchema(content.faqs);
 
   return (
     <>
-      <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={[breadcrumbSchema, faqSchema].filter(Boolean)} />
       <MockInterviewClient />
+      <ToolSeoContent intro={content.intro} faqs={content.faqs} relatedJobLinks={content.relatedJobLinks} />
     </>
   );
 }

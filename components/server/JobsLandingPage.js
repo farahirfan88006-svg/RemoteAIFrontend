@@ -4,9 +4,11 @@ import JsonLd from "./JsonLd";
 import JobsResults from "./JobsResults";
 import JobsLoadingSkeleton from "./JobsLoadingSkeleton";
 import RelatedLinks from "./RelatedLinks";
+import FaqSection from "./FaqSection";
+import AiToolsPromo from "./AiToolsPromo";
 import JobsSearchBar from "@/components/client/JobsSearchBar";
 import JobsSortDropdown from "@/components/client/JobsSortDropdown";
-import { buildBreadcrumbSchema, buildCollectionPageSchema } from "@/lib/seo/schemas";
+import { buildBreadcrumbSchema, buildCollectionPageSchema, buildFaqSchema } from "@/lib/seo/schemas";
 import { siteConfig } from "@/lib/seo/siteConfig";
 import styles from "@/app/jobs/page.module.css";
 
@@ -42,7 +44,17 @@ import styles from "@/app/jobs/page.module.css";
  *   seoLinks?: Array<{name:string,href:string}>,
  *   relatedType?: "category" | "country" | "company" | "skill",
  *   relatedSlug?: string,
+ *   introContent?: string,
+ *   faqs?: Array<{question: string, answer: string}>,
+ *   showAiToolsPromo?: boolean,
  * }} props
+ *
+ * `introContent`, `faqs`, and `showAiToolsPromo` are optional and default
+ * to rendering nothing extra — /jobs/category/[slug], /jobs/country/[slug],
+ * and /jobs/company/[slug] don't pass them, so their output is byte-for-
+ * byte the same as before these props were added. Only
+ * app/[seoSlug]/page.js currently passes them, for the priority category
+ * pages that have curated long-form content (see lib/seo/categoryIntros.js).
  */
 export default function JobsLandingPage({
   eyebrow,
@@ -59,13 +71,18 @@ export default function JobsLandingPage({
   seoLinks = [],
   relatedType,
   relatedSlug,
+  introContent,
+  faqs = [],
+  showAiToolsPromo = false,
 }) {
   const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems);
   const collectionSchema = buildCollectionPageSchema({ name: heading, description, path: basePath });
+  const faqSchema = faqs.length ? buildFaqSchema(faqs) : null;
+  const schemas = [breadcrumbSchema, collectionSchema, ...(faqSchema ? [faqSchema] : [])];
 
   return (
     <>
-      <JsonLd data={[breadcrumbSchema, collectionSchema]} />
+      <JsonLd data={schemas} />
 
       <section className={styles.hero}>
         <div className="container">
@@ -90,6 +107,20 @@ export default function JobsLandingPage({
         </div>
       </section>
 
+      {introContent && (
+        <section className="section" style={{ paddingBottom: 0 }}>
+          <div className="container">
+            <div style={{ maxWidth: "72ch", display: "grid", gap: "1rem" }}>
+              {introContent.split("\n\n").map((para, i) => (
+                <p key={i} style={{ lineHeight: 1.7, color: "var(--color-text-muted)" }}>
+                  {para}
+                </p>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="section">
         <div className="container">
           <div className={styles.main}>
@@ -102,6 +133,8 @@ export default function JobsLandingPage({
               <JobsResults filters={filters} basePath={basePath} omit={omit} />
             </Suspense>
 
+            <FaqSection faqs={faqs} />
+
             <RelatedLinks
               categories={categories}
               countries={countries}
@@ -111,6 +144,8 @@ export default function JobsLandingPage({
               currentType={relatedType}
               currentSlug={relatedSlug}
             />
+
+            {showAiToolsPromo && <AiToolsPromo />}
           </div>
         </div>
       </section>

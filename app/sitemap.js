@@ -47,6 +47,12 @@ const STATIC_ROUTES = [
   { path: "/mock-interview", changeFrequency: "monthly", priority: 0.4 },
   { path: "/resume-rewrite", changeFrequency: "monthly", priority: 0.4 },
   { path: "/match-score", changeFrequency: "monthly", priority: 0.4 },
+  { path: "/resume-analyzer", changeFrequency: "monthly", priority: 0.4 },
+  // Same public-shell-of-a-gated-tool precedent as the four routes above —
+  // /resumes/generate is the AI Resume Builder tool itself, distinct from
+  // /resumes (the private "your saved resumes" list, which stays excluded
+  // below alongside /cover-letters).
+  { path: "/resumes/generate", changeFrequency: "monthly", priority: 0.4 },
   { path: "/blog", changeFrequency: "daily", priority: 0.6 },
   { path: "/about", changeFrequency: "monthly", priority: 0.3 },
   { path: "/contact", changeFrequency: "monthly", priority: 0.3 },

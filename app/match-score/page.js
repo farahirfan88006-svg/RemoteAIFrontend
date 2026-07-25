@@ -1,7 +1,11 @@
 import JsonLd from "@/components/server/JsonLd";
+import ToolSeoContent from "@/components/server/ToolSeoContent";
 import MatchScoreClient from "@/components/career/MatchScoreClient";
 import { siteConfig } from "@/lib/seo/siteConfig";
-import { buildBreadcrumbSchema } from "@/lib/seo/schemas";
+import { buildBreadcrumbSchema, buildFaqSchema } from "@/lib/seo/schemas";
+import { getToolContent } from "@/lib/seo/toolContent";
+
+const content = getToolContent("match-score");
 
 export async function generateMetadata() {
   const title = "AI Match Score";
@@ -11,6 +15,7 @@ export async function generateMetadata() {
   return {
     title,
     description,
+    keywords: content.keywords,
     alternates: { canonical: "/match-score" },
     openGraph: {
       type: "website",
@@ -35,11 +40,13 @@ export default function MatchScorePage() {
     { name: "Home", path: "/" },
     { name: "Match Score", path: "/match-score" },
   ]);
+  const faqSchema = buildFaqSchema(content.faqs);
 
   return (
     <>
-      <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={[breadcrumbSchema, faqSchema].filter(Boolean)} />
       <MatchScoreClient />
+      <ToolSeoContent intro={content.intro} faqs={content.faqs} relatedJobLinks={content.relatedJobLinks} />
     </>
   );
 }

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import DifficultyBadge from "./DifficultyBadge";
-import styles from "./AITools.module.css";
 
 /**
  * One mock interview question: the question text, a difficulty badge,
@@ -10,16 +9,13 @@ import styles from "./AITools.module.css";
  * navigating away — each card owns its own open/closed state so
  * expanding one question doesn't affect the others.
  */
-export default function InterviewQuestionCard({ question, difficulty, suggestedAnswer, index }) {
+export default function InterviewQuestionCard({ question, difficulty, suggestedAnswer }) {
   const [showAnswer, setShowAnswer] = useState(false);
 
   return (
-    <div className={styles.questionCard}>
-      <div className={styles.questionHeader}>
-        <div>
-          {typeof index === "number" && <div className={styles.questionIndex}>Question {index + 1}</div>}
-          <h4 style={{ margin: 0, marginTop: "0.15rem" }}>{question}</h4>
-        </div>
+    <div className="card" style={{ padding: "var(--space-md) var(--space-lg)" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "var(--space-sm)" }}>
+        <h4 style={{ margin: 0 }}>{question}</h4>
         <DifficultyBadge difficulty={difficulty} />
       </div>
 
@@ -30,11 +26,11 @@ export default function InterviewQuestionCard({ question, difficulty, suggestedA
         onClick={() => setShowAnswer((v) => !v)}
         aria-expanded={showAnswer}
       >
-        {showAnswer ? "Hide model answer" : "Show model answer"}
+        {showAnswer ? "Hide answer" : "Show answer"}
       </button>
 
       {showAnswer && (
-        <p className={styles.answerReveal}>
+        <p style={{ marginTop: "var(--space-2xs)", paddingTop: "var(--space-2xs)", borderTop: "1px solid var(--color-border)" }}>
           {suggestedAnswer}
         </p>
       )}

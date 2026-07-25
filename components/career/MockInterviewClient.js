@@ -7,7 +7,6 @@ import InterviewQuestionCard from "@/components/career/InterviewQuestionCard";
 import AIResultCard from "@/components/career/AIResultCard";
 import { SkeletonLine } from "@/components/ui/Skeleton";
 import { startMockInterview } from "@/lib/api/mockInterview";
-import styles from "@/components/career/AITools.module.css";
 
 const INTERVIEW_TYPES = [
   { id: "technical", label: "Technical" },
@@ -15,14 +14,18 @@ const INTERVIEW_TYPES = [
   { id: "behavioral", label: "Behavioral" },
 ];
 
+const inputStyle = { width: "100%", padding: "0.5rem" };
+const textareaStyle = { width: "100%", padding: "0.75rem", fontFamily: "var(--font-body)", resize: "vertical" };
+const fieldStyle = { display: "grid", gap: "0.25rem" };
+
 function ListSection({ title, items }) {
   if (!items || items.length === 0) return null;
   return (
-    <div className={styles.resultCard}>
+    <div className="card" style={{ padding: "var(--space-lg)" }}>
       <span className="eyebrow">{title}</span>
-      <ul className={styles.bulletList}>
+      <ul style={{ marginTop: "var(--space-sm)", display: "flex", flexDirection: "column", gap: "var(--space-2xs)" }}>
         {items.map((item, i) => (
-          <li key={i} className={styles.bulletItem}>
+          <li key={i} style={{ fontSize: "0.9em", display: "flex", gap: "var(--space-2xs)" }}>
             <span aria-hidden="true">•</span>
             <span>{item}</span>
           </li>
@@ -78,7 +81,6 @@ export default function MockInterviewClient() {
   }
 
   const details = response?.data?.details;
-  const questionCount = details?.questions?.length || 0;
 
   return (
     <section className="section">
@@ -91,13 +93,12 @@ export default function MockInterviewClient() {
         />
 
         <PremiumRoute feature="mockInterviews">
-          <form onSubmit={handleSubmit} className={styles.toolCard}>
-            <span className="eyebrow">Interview setup</span>
-            <div className={styles.formGrid} style={{ marginTop: "var(--space-sm)" }}>
-              <label className={styles.field}>
-                <span className={styles.fieldLabel}>Job title</span>
+          <form onSubmit={handleSubmit} className="card" style={{ padding: "var(--space-lg)" }}>
+            <div style={{ display: "grid", gap: "0.75rem", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+              <label style={fieldStyle}>
+                <span style={{ fontSize: "0.85em" }}>Job title</span>
                 <input
-                  className={styles.input}
+                  style={inputStyle}
                   type="text"
                   placeholder="e.g. Frontend Engineer"
                   value={jobTitle}
@@ -105,10 +106,10 @@ export default function MockInterviewClient() {
                   aria-label="Job title"
                 />
               </label>
-              <label className={styles.field}>
-                <span className={styles.fieldLabel}>Experience level</span>
+              <label style={fieldStyle}>
+                <span style={{ fontSize: "0.85em" }}>Experience level</span>
                 <input
-                  className={styles.input}
+                  style={inputStyle}
                   type="text"
                   placeholder="e.g. Mid-level (3-5 years)"
                   value={experienceLevel}
@@ -116,10 +117,10 @@ export default function MockInterviewClient() {
                   aria-label="Experience level"
                 />
               </label>
-              <label className={styles.field}>
-                <span className={styles.fieldLabel}>Interview type</span>
+              <label style={fieldStyle}>
+                <span style={{ fontSize: "0.85em" }}>Interview type</span>
                 <select
-                  className={styles.select}
+                  style={inputStyle}
                   value={interviewType}
                   onChange={(e) => setInterviewType(e.target.value)}
                   aria-label="Interview type"
@@ -131,10 +132,10 @@ export default function MockInterviewClient() {
                   ))}
                 </select>
               </label>
-              <label className={styles.field}>
-                <span className={styles.fieldLabel}>Skills</span>
+              <label style={fieldStyle}>
+                <span style={{ fontSize: "0.85em" }}>Skills</span>
                 <input
-                  className={styles.input}
+                  style={inputStyle}
                   type="text"
                   placeholder="e.g. React, TypeScript, CSS"
                   value={skills}
@@ -144,10 +145,10 @@ export default function MockInterviewClient() {
               </label>
             </div>
 
-            <label className={styles.field} style={{ marginTop: "var(--space-sm)" }}>
-              <span className={styles.fieldLabel}>Resume text</span>
+            <label style={{ ...fieldStyle, marginTop: "0.75rem" }}>
+              <span style={{ fontSize: "0.85em" }}>Resume text</span>
               <textarea
-                className={styles.textarea}
+                style={textareaStyle}
                 rows={8}
                 placeholder="Paste your resume text here…"
                 value={resumeText}
@@ -156,13 +157,9 @@ export default function MockInterviewClient() {
               />
             </label>
 
-            {error && (
-              <p className={styles.errorText} role="alert">
-                <span aria-hidden="true">⚠</span> {error}
-              </p>
-            )}
+            {error && <p style={{ color: "crimson", marginTop: "var(--space-sm)" }}>{error}</p>}
 
-            <div className={styles.actions}>
+            <div style={{ display: "flex", gap: "var(--space-sm)", marginTop: "var(--space-lg)", flexWrap: "wrap" }}>
               <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting}>
                 {isSubmitting ? "Generating…" : "Start mock interview"}
               </button>
@@ -173,11 +170,7 @@ export default function MockInterviewClient() {
           </form>
 
           {isSubmitting && (
-            <div className={styles.loadingCard}>
-              <div className={styles.loadingHeader}>
-                <span className={styles.loadingSpinner} aria-hidden="true" />
-                <span className={styles.loadingLabel}>Building your interview questions…</span>
-              </div>
+            <div className="card" style={{ padding: "var(--space-lg)", marginTop: "var(--space-lg)" }}>
               <SkeletonLine width="60%" height="1.25rem" />
               <SkeletonLine width="90%" />
               <SkeletonLine width="80%" />
@@ -185,22 +178,13 @@ export default function MockInterviewClient() {
           )}
 
           {response && details && (
-            <div className={styles.sectionGap + " " + styles.stackGap}>
+            <div style={{ marginTop: "var(--space-lg)", display: "flex", flexDirection: "column", gap: "var(--space-md)" }}>
               {details.questions?.length > 0 && (
                 <div>
-                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: "var(--space-sm)" }}>
-                    <h3 style={{ marginBottom: "var(--space-sm)" }}>Interview questions</h3>
-                    <span className={styles.progressLabel}>{questionCount} question{questionCount === 1 ? "" : "s"}</span>
-                  </div>
-                  <div className={styles.stackGap}>
-                    {details.questions.map((q, i) => (
-                      <InterviewQuestionCard
-                        key={q.id}
-                        index={i}
-                        question={q.question}
-                        difficulty={q.difficulty}
-                        suggestedAnswer={q.modelAnswer}
-                      />
+                  <h3 style={{ marginBottom: "var(--space-sm)" }}>Interview questions</h3>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-md)" }}>
+                    {details.questions.map((q) => (
+                      <InterviewQuestionCard key={q.id} question={q.question} difficulty={q.difficulty} suggestedAnswer={q.modelAnswer} />
                     ))}
                   </div>
                 </div>

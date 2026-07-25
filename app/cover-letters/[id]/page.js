@@ -4,8 +4,6 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth/AuthContext";
 import * as coverLettersApi from "@/lib/api/coverLetters";
-import { SkeletonLine } from "@/components/ui/Skeleton";
-import styles from "@/components/career/AITools.module.css";
 
 const AUTOSAVE_DELAY_MS = 1000;
 
@@ -106,9 +104,7 @@ export default function CoverLetterEditorPage() {
     return (
       <section className="section">
         <div className="container">
-          <p className={styles.errorText} role="alert">
-            <span aria-hidden="true">⚠</span> {error}
-          </p>
+          <p style={{ color: "crimson" }}>{error}</p>
         </div>
       </section>
     );
@@ -117,15 +113,7 @@ export default function CoverLetterEditorPage() {
     return (
       <section className="section">
         <div className="container">
-          <div className={styles.loadingCard} style={{ marginTop: 0 }}>
-            <div className={styles.loadingHeader}>
-              <span className={styles.loadingSpinner} aria-hidden="true" />
-              <span className={styles.loadingLabel}>Loading your cover letter…</span>
-            </div>
-            <SkeletonLine width="60%" height="1.25rem" />
-            <SkeletonLine width="95%" />
-            <SkeletonLine width="90%" />
-          </div>
+          <p>Loading…</p>
         </div>
       </section>
     );
@@ -134,18 +122,18 @@ export default function CoverLetterEditorPage() {
   return (
     <section className="section">
       <div className="container">
-        <div className={`${styles.letterToolbar} no-print`}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "var(--space-sm)" }} className="no-print">
           <input
             type="text"
             value={letter.title}
             onChange={(e) => update({ title: e.target.value })}
-            className={styles.letterTitleInput}
+            style={{ fontSize: "1.4rem", fontWeight: 600, border: "none", background: "none", padding: 0 }}
             aria-label="Cover letter title"
           />
           <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-            <span className={`${styles.saveStatus} ${saveState === "error" ? styles["saveStatus--error"] : ""}`}>
+            <span style={{ fontSize: "0.85em", color: "var(--color-text-muted, #666)" }}>
               {saveState === "saving" && "Saving…"}
-              {saveState === "saved" && "✔ All changes saved"}
+              {saveState === "saved" && "All changes saved"}
               {saveState === "error" && "Auto-save failed"}
             </span>
             <button type="button" className="btn btn-secondary" onClick={() => window.print()}>
@@ -158,7 +146,7 @@ export default function CoverLetterEditorPage() {
         </div>
 
         {letter.job?.companyName && (
-          <p className={`${styles.mutedNote} no-print`} style={{ marginTop: "var(--space-2xs)" }}>
+          <p className="no-print" style={{ color: "var(--color-text-muted, #666)" }}>
             Tailored for {letter.job.title} at {letter.job.companyName}
           </p>
         )}
@@ -167,8 +155,8 @@ export default function CoverLetterEditorPage() {
           value={letter.content}
           onChange={(e) => update({ content: e.target.value })}
           rows={22}
-          className={styles.letterBody}
-          aria-label="Cover letter content"
+          className="card"
+          style={{ width: "100%", padding: "var(--space-lg)", marginTop: "var(--space-md)", fontSize: "1rem", lineHeight: 1.6, whiteSpace: "pre-wrap" }}
         />
       </div>
 

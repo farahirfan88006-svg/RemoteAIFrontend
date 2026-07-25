@@ -6,9 +6,6 @@ import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthContext";
 import * as coverLettersApi from "@/lib/api/coverLetters";
 import PremiumBadge from "@/components/premium/PremiumBadge";
-import StateBlock from "@/components/ui/StateBlock";
-import { SkeletonLine } from "@/components/ui/Skeleton";
-import styles from "@/components/career/AITools.module.css";
 
 export default function CoverLettersDashboardPage() {
   const { user, isLoading: authLoading } = useAuth();
@@ -48,70 +45,45 @@ export default function CoverLettersDashboardPage() {
   return (
     <section className="section">
       <div className="container">
-        <div className={styles.hero}>
-          <div className={styles.heroInner}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "var(--space-md)" }}>
-              <div>
-                <span className="eyebrow">
-                  <span className="dot dot--pulse" />
-                  Cover Letters
-                </span>
-                <div className={styles.heroTitleRow}>
-                  <h1>Your cover letters</h1>
-                  <PremiumBadge feature="coverLetter" />
-                </div>
-                <p className={styles.heroDescription}>
-                  Generate, edit, and download AI-tailored cover letters for every application.
-                </p>
-              </div>
-              <Link href="/cover-letters/new" className="btn btn-primary btn-lg">
-                + New cover letter
-              </Link>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "var(--space-md)" }}>
+          <div>
+            <span className="eyebrow">
+              <span className="dot" />
+              Cover Letters
+            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--space-sm)", marginTop: "var(--space-sm)", flexWrap: "wrap" }}>
+              <h1 style={{ margin: 0 }}>Your cover letters</h1>
+              <PremiumBadge feature="coverLetter" />
             </div>
           </div>
+          <Link href="/cover-letters/new" className="btn btn-primary">
+            + New cover letter
+          </Link>
         </div>
 
-        {error && (
-          <p className={styles.errorText} role="alert">
-            <span aria-hidden="true">⚠</span> {error}
-          </p>
-        )}
+        {error && <p style={{ color: "crimson", marginTop: "var(--space-md)" }}>{error}</p>}
 
         {letters === null ? (
-          <div className={styles.historyGrid}>
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="card" style={{ padding: "var(--space-md)" }}>
-                <SkeletonLine width="65%" height="1.1rem" />
-                <SkeletonLine width="40%" />
-                <SkeletonLine width="50%" />
-              </div>
-            ))}
-          </div>
+          <p style={{ marginTop: "var(--space-lg)" }}>Loading…</p>
         ) : letters.length === 0 ? (
-          <StateBlock
-            icon="✉️"
-            title="No cover letters yet"
-            description="Generate your first AI-tailored cover letter from one of your resumes."
-            action={
-              <Link href="/cover-letters/new" className="btn btn-primary" style={{ marginTop: "var(--space-sm)" }}>
-                Create your first cover letter
-              </Link>
-            }
-          />
+          <div className="card" style={{ marginTop: "var(--space-lg)", padding: "var(--space-lg)" }}>
+            <p>No cover letters yet.</p>
+            <Link href="/cover-letters/new" className="btn btn-primary" style={{ marginTop: "var(--space-sm)", display: "inline-block" }}>
+              Create your first cover letter
+            </Link>
+          </div>
         ) : (
-          <div className={styles.historyGrid}>
+          <div style={{ marginTop: "var(--space-lg)", display: "grid", gap: "var(--space-md)", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))" }}>
             {letters.map((letter) => (
-              <div key={letter._id} className={styles.resultCard}>
+              <div key={letter._id} className="card" style={{ padding: "var(--space-md)" }}>
                 <h3 style={{ margin: 0 }}>{letter.title}</h3>
-                {letter.job?.companyName && <p className={styles.mutedNote} style={{ marginTop: "var(--space-3xs)" }}>{letter.job.companyName}</p>}
-                <p className={styles.historyRowMeta} style={{ marginTop: "var(--space-2xs)" }}>
-                  Updated {new Date(letter.updatedAt).toLocaleDateString()}
-                </p>
-                <div className={styles.actions} style={{ marginTop: "var(--space-sm)" }}>
+                {letter.job?.companyName && <p style={{ fontSize: "0.85em", color: "var(--color-text-muted, #666)" }}>{letter.job.companyName}</p>}
+                <p style={{ fontSize: "0.8em", color: "var(--color-text-muted, #666)" }}>Updated {new Date(letter.updatedAt).toLocaleDateString()}</p>
+                <div style={{ marginTop: "var(--space-sm)", display: "flex", gap: "0.5rem" }}>
                   <Link href={`/cover-letters/${letter._id}`} className="btn btn-primary">
                     Edit
                   </Link>
-                  <button type="button" className="btn btn-ghost" style={{ color: "var(--color-danger)" }} onClick={() => handleDelete(letter._id)}>
+                  <button type="button" className="btn btn-ghost" style={{ color: "crimson" }} onClick={() => handleDelete(letter._id)}>
                     Delete
                   </button>
                 </div>
