@@ -8,10 +8,7 @@ import RoadmapTimeline from "@/components/career/RoadmapTimeline";
 import AIResultCard from "@/components/career/AIResultCard";
 import { SkeletonLine } from "@/components/ui/Skeleton";
 import { getCareerAdvice } from "@/lib/api/careerCoach";
-
-const inputStyle = { width: "100%", padding: "0.5rem" };
-const textareaStyle = { width: "100%", padding: "0.5rem", fontFamily: "var(--font-body)", resize: "vertical" };
-const fieldStyle = { display: "grid", gap: "0.25rem" };
+import styles from "@/components/career/AITools.module.css";
 
 export default function CareerCoachClient() {
   const [careerGoal, setCareerGoal] = useState("");
@@ -74,12 +71,13 @@ export default function CareerCoachClient() {
         />
 
         <PremiumRoute feature="careerCoach">
-          <form onSubmit={handleSubmit} className="card" style={{ padding: "var(--space-lg)" }}>
-            <div style={{ display: "grid", gap: "0.75rem", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
-              <label style={{ ...fieldStyle, gridColumn: "1 / -1" }}>
-                <span style={{ fontSize: "0.85em" }}>Career goal</span>
+          <form onSubmit={handleSubmit} className={styles.toolCard}>
+            <span className="eyebrow">Your goal</span>
+            <div className={styles.formGrid} style={{ marginTop: "var(--space-sm)" }}>
+              <label className={`${styles.field} ${styles.fullWidth}`}>
+                <span className={styles.fieldLabel}>Career goal</span>
                 <textarea
-                  style={textareaStyle}
+                  className={styles.textarea}
                   rows={2}
                   placeholder="e.g. Move from backend engineering into engineering management within 2 years"
                   value={careerGoal}
@@ -87,10 +85,10 @@ export default function CareerCoachClient() {
                   aria-label="Career goal"
                 />
               </label>
-              <label style={fieldStyle}>
-                <span style={{ fontSize: "0.85em" }}>Experience</span>
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Experience</span>
                 <input
-                  style={inputStyle}
+                  className={styles.input}
                   type="text"
                   placeholder="e.g. 4 years as a Backend Engineer"
                   value={experience}
@@ -98,10 +96,10 @@ export default function CareerCoachClient() {
                   aria-label="Experience"
                 />
               </label>
-              <label style={fieldStyle}>
-                <span style={{ fontSize: "0.85em" }}>Target role</span>
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Target role</span>
                 <input
-                  style={inputStyle}
+                  className={styles.input}
                   type="text"
                   placeholder="e.g. Engineering Manager"
                   value={targetRole}
@@ -118,9 +116,13 @@ export default function CareerCoachClient() {
               placeholder="Add a skill — press Enter"
             />
 
-            {error && <p style={{ color: "crimson", marginTop: "var(--space-sm)" }}>{error}</p>}
+            {error && (
+              <p className={styles.errorText} role="alert">
+                <span aria-hidden="true">⚠</span> {error}
+              </p>
+            )}
 
-            <div style={{ display: "flex", gap: "var(--space-sm)", marginTop: "var(--space-lg)", flexWrap: "wrap" }}>
+            <div className={styles.actions}>
               <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting}>
                 {isSubmitting ? "Generating…" : "Generate my roadmap"}
               </button>
@@ -131,7 +133,11 @@ export default function CareerCoachClient() {
           </form>
 
           {isSubmitting && (
-            <div className="card" style={{ padding: "var(--space-lg)", marginTop: "var(--space-lg)" }}>
+            <div className={styles.loadingCard}>
+              <div className={styles.loadingHeader}>
+                <span className={styles.loadingSpinner} aria-hidden="true" />
+                <span className={styles.loadingLabel}>Mapping out your roadmap…</span>
+              </div>
               <SkeletonLine width="60%" height="1.25rem" />
               <SkeletonLine width="90%" />
               <SkeletonLine width="80%" />

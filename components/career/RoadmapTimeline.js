@@ -1,3 +1,5 @@
+import styles from "./AITools.module.css";
+
 /**
  * Renders the structured career plan returned in `data.details` by
  * POST /api/ai/career-coach/advice when the backend used its local
@@ -16,23 +18,16 @@ const SECTIONS = [
 
 export default function RoadmapTimeline({ plan }) {
   return (
-    <div
-      style={{
-        marginTop: "var(--space-lg)",
-        display: "grid",
-        gap: "var(--space-md)",
-        gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-      }}
-    >
+    <div className={styles.timelineGrid}>
       {SECTIONS.map(({ key, label }) => {
         const items = plan[key];
         if (!items || items.length === 0) return null;
         return (
-          <div key={key} className="card" style={{ padding: "var(--space-lg)" }}>
+          <div key={key} className={styles.timelineCard}>
             <span className="eyebrow">{label}</span>
-            <ul style={{ marginTop: "var(--space-sm)", display: "flex", flexDirection: "column", gap: "var(--space-2xs)" }}>
+            <ul className={styles.bulletList}>
               {items.map((item, i) => (
-                <li key={i} style={{ fontSize: "0.9em", display: "flex", gap: "var(--space-2xs)" }}>
+                <li key={i} className={styles.bulletItem}>
                   <span aria-hidden="true">✔</span>
                   <span>{item}</span>
                 </li>
