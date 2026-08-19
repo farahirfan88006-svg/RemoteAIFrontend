@@ -39,8 +39,11 @@ export const metadata = {
   },
   description: siteConfig.description,
   keywords: siteConfig.keywords,
-  icons: {
+     icons:  {
     icon: "/favicon.ico",
+  },
+  verification: {
+    google: "lEXJ94WeuRHLe-WUhTVI4SkL-QkDN6Pi-RI-2ZnebY8",
   },
   openGraph: {
     type: "website",
